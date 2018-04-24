@@ -1,0 +1,352 @@
+﻿@model IEnumerable<ContactInfoMaintain.ContactDetail>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ContactInfoMaintenance</title>
+</head>
+<body>
+    <div class="w3-container" align="center">
+        <h1>Contact Information Details</h1>
+        <p> Add contact and display all the Contact Information</p>
+        </div>
+        <table id="tblCustomers" class="table" align="center" cellpadding="0" border="1" >
+            <tr>
+                <th style="width:100px"  hidden >Id</th>
+                <th style="width:100px"  >FirstName</th>
+                <th style="width:100px" >LastName</th>
+                <th style="width:100px" >Email</th>
+                <th style="width:150px">PhoneNumber</th>
+                <th style="width:150px" hidden>Status</th>
+                <th></th>
+            </tr>
+            <tr>
+                <td hidden>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td hidden>&nbsp;</td>
+
+            </tr>
+            @foreach (ContactDetail customer in Model)
+            {
+                <tr>
+                    <td class="ID" hidden>
+                        <span>@customer.ID</span>
+
+                    </td>
+                    <td class="FirstName">
+                        <span>@customer.FirstName</span>
+                        <input type="text" value="@customer.FirstName" style="display:none" />
+                    </td>
+                    <td class="LastName">
+                        <span>@customer.LastName</span>
+                        <input type="text" value="@customer.LastName" style="display:none" />
+                    </td>
+                    <td class="Email">
+                        <span>@customer.Email</span>
+                        <input type="text" value="@customer.Email" style="display:none" />
+
+                    </td>
+                    <td class="PhoneNumber">
+                        <span>@customer.PhoneNumber</span>
+                        <input type="text" value="@customer.PhoneNumber" style="display:none" />
+                    </td>
+                    <td class="AvailabiltyStatus" hidden>
+                        <span>@customer.AvailabiltyStatus</span>
+                        <input type="text" value="@customer.AvailabiltyStatus" style="display:none" />
+                    </td>
+                    <td>
+                        <a class="Edit" href="javascript:;">Edit</a>
+                        <a class="Update" href="javascript:;" style="display:none">Update</a>
+                        <a class="Cancel" href="javascript:;" style="display:none">Cancel</a>
+                        <a class="Delete" href="javascript:;">Delete</a>
+                    </td>
+                </tr>
+            }
+        </table>
+        <div></div>
+        <p></p>
+        <div class="w3-container" align="center">
+            <h2>Add New Contact</h2>
+        </div>
+        <table border="1" cellpadding="0" align="center" cellspacing="0">
+            <tr>
+                <td style="width: 150px">
+                    First Name<br />
+                    <input type="text" id="txtfirstName" style="width:140px" required />
+                </td>
+                <td style="width: 150px">
+                    Last Name:<br />
+                    <input type="text" id="txtlastName" style="width:140px" required />
+                </td>
+                <td style="width: 150px">
+                    Email:<br />
+                    <input type="text" id="txtemail" style="width:140px" required />
+                </td>
+                <td style="width: 150px">
+                    Phone Number:<br />
+                    <input type="text" id="txtphoneNumber" style="width:140px" required />
+                </td>
+                <td style="width: 150px">
+                    Availability Status(Active/Inactive):<br/>
+
+                    <input type="text" id="txtavailabilityStatus" style="width:140px" required />
+                </td>
+                <td style="width: 200px">
+                    <br />
+                    <input type="button" id="btnAdd" align="center" value="Add New Contact" />
+                </td>
+            </tr>
+        </table>
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"  />
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js" ></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
+        <script type="text/javascript">
+            $(function () {
+                //Remove the dummy row if data present.
+                if ($("#tblCustomers tr").length > 2) {
+                    $("#tblCustomers tr:eq(1)").remove();
+                }
+            });
+            //function for css for table
+      function isNumeric(n) {
+      return !isNaN(parseFloat(n)) && isFinite(n);
+      }
+
+       
+            $(document).ready(function () {
+                 $('#tblCustomers').DataTable();
+            });
+            function AppendRow(row, firstname, lastname, email, phonenumber, status) {
+                //Bind Id.
+                $(".ID", row).find("span").html(Id);
+
+                //Bind FirstName.
+                $(".FirstName", row).find("span").html(firstname);
+                $(".FirstName", row).find("input").val(firstname);
+
+                //Bind LastName.
+                $(".LastName", row).find("span").html(lastname);
+                $(".LastName", row).find("input").val(lastname);
+
+                //Bind Email
+                $(".Email", row).find("span").html(email);
+                $(".Email", row).find("input").val(email);
+
+                //Bind PhoneNumber.
+                $(".PhoneNumber", row).find("span").html(phonenumber);
+                $(".PhoneNumber", row).find("input").val(phonenumber);
+
+                //Bind statuts
+                $(".AvailabilityStatus", row).find("span").html(status);
+                $(".AvailabilityStatus", row).find("input").val(status);
+                $("#tblCustomers").append(row);
+            };
+
+            // Function that validates email address through a regular expression.
+                function validateEmail(sEmail) {
+                    var filter = /^[a-zA-Z0-9_.-]+@@[a-zA-Z0-9]+[a-zA-Z0-9.-]+[a-zA-Z0-9]+.[a-z]{0,4}$/;
+                    if (filter.test(sEmail)) {
+                return true;
+                }
+                else {
+                return false;
+                }
+                }
+          
+            //Add event handler.
+            $("body").on("click", "#btnAdd", function ()
+            {
+                var flag = true;
+                var txtfirstName = $("#txtfirstName");
+                var txtlastName = $("#txtlastName");
+                var txtemail = $("#txtemail");
+                //email validation
+                if (txtemail.val().toString() != "")
+                {
+                    var sEmail = txtemail.val().toString();
+                    if (validateEmail(sEmail)) {
+                      
+                    }
+                    else {
+                        alert('Invalid Email Address');
+                        flag = false;
+                    }
+
+                }
+                var txtphoneNumber = $("#txtphoneNumber");
+                if (txtphoneNumber.val().toString()!="")
+                {
+                    
+                    var val = $("#txtphoneNumber").val();
+                    if (isNumeric(val)) {  }
+                    else {
+                        alert('Not a valid Phone number');
+                        flag = false
+                    }
+                    var phoneno = parseInt(txtphoneNumber.val());
+                    if (phoneno.length < 10)
+                    {
+                        alert("Length should not be less than 10 ");
+                        flag = false;
+
+                    }
+                    
+                }
+
+
+                var txtavailabilityStatus = $("#txtavailabilityStatus");
+                if (txtavailabilityStatus.val().toString()!="")
+                {
+                    if (txtavailabilityStatus.val().toString().toUpperCase() == "ACTIVE" || txtavailabilityStatus.val().toString().toUpperCase() == "INACTIVE")
+                    {
+                        //alert("Status should be Active/Inactive");
+                        
+                    }
+                    else 
+                    {
+                        alert("Status should be Active/Inactive");
+                        flag = false;
+                    }
+                }
+                //required field validation
+                if (txtfirstName.val().toString() == "" || txtlastName.val().toString() == "" || txtemail.val().toString() == "" || txtphoneNumber.val().toString() == "" || txtavailabilityStatus.val().toString() == "") {
+
+                    alert("'All fields are mandatory'");
+                   
+                    location.reload();
+                    flag = false;
+
+
+                }
+                else if (flag == true || flag == false)
+                {
+                    location.reload();
+                }
+                else if (flag == true) {
+                    alert(flag);
+                    var _customer = {};
+                    _customer.firstname = txtfirstName.val();
+                    _customer.lastname = txtlastName.val();
+                    _customer.email = txtemail.val();
+                    _customer.phonenumber = txtphoneNumber.val();
+                    _customer.status = txtavailabilityStatus.val();
+
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/api/ContactAPI/InsertContact",
+                        data: JSON.stringify(_customer),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (r) {
+                            var row = $("#tblCustomers tr:last-child").clone(true);
+                            AppendRow(row, r.Id, r.firstname, r.lastname, r.email, r.phonenumber, r.status);
+                            txtfirstName.val("");
+                            txtlastName.val("");
+                            txtemail.val("");
+                            txtphoneNumber.val("");
+                            txtavailabilityStatus.val("");
+
+                        }
+                    });
+                    alert("Contact Added Successfully");
+                    location.reload();
+                }
+            });
+
+            //Edit event handler.
+            $("body").on("click", "#tblCustomers .Edit", function () {
+                var row = $(this).closest("tr");
+                $("td", row).each(function () {
+                    if ($(this).find("input").length > 0) {
+                        $(this).find("input").show();
+                        $(this).find("span").hide();
+                    }
+                });
+                row.find(".Update").show();
+                row.find(".Cancel").show();
+                row.find(".Delete").hide();
+                $(this).hide();
+            });
+
+            //Update event handler.
+            $("body").on("click", "#tblCustomers .Update", function () {
+                var row = $(this).closest("tr");
+                $("td", row).each(function () {
+                    if ($(this).find("input").length > 0) {
+                        var span = $(this).find("span");
+                        var input = $(this).find("input");
+                        span.html(input.val());
+                        span.show();
+                        input.hide();
+                    }
+                });
+                row.find(".Edit").show();
+                row.find(".Delete").show();
+                row.find(".Cancel").hide();
+                $(this).hide();
+                var _customer = {};
+                _customer.Id = row.find(".ID").find("span").html();
+                _customer.firstname = row.find(".FirstName").find("span").html();
+                _customer.lastname = row.find(".LastName").find("span").html();
+                _customer.email = row.find(".Email").find("span").html();
+                _customer.phonenumber = row.find(".PhoneNumber").find("span").html();
+                _customer.status = row.find(".AvailabilityStatus").find("span").html();
+                
+                $.ajax({
+                    type: "POST",
+                    url: "/api/ContactAPI/UpdateContact",
+                    data: JSON.stringify(_customer),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json"
+                });
+            });
+
+            //Cancel event handler.
+            $("body").on("click", "#tblCustomers .Cancel", function () {
+                var row = $(this).closest("tr");
+                $("td", row).each(function () {
+                    if ($(this).find("input").length > 0) {
+                        var span = $(this).find("span");
+                        var input = $(this).find("input");
+                        input.val(span.html());
+                        span.show();
+                        input.hide();
+                    }
+                });
+                row.find(".Edit").show();
+                row.find(".Delete").show();
+                row.find(".Update").hide();
+                $(this).hide();
+            });
+
+            //Delete event handler.
+            $("body").on("click", "#tblCustomers .Delete", function () {
+                if (confirm("Do you want to delete this row?")) {
+                    var row = $(this).closest("tr");
+                    var _customer = {};
+                    _customer.Id = row.find("span").html();
+                    $.ajax({
+                        type: "POST",
+                        url: "/api/ContactAPI/DeleteContact",
+                        data: JSON.stringify(_customer),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (response) {
+                            row.remove();
+                        }
+                    });
+                }
+            });
+        </script>
+</body>
+</html>
